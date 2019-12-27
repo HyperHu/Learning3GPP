@@ -1,0 +1,93 @@
+@startuml CSI RS
+
+' class CSI-ResourcePeriodicityAndOffset
+' {
+'     periodic : slot
+'     offset : slot
+' }
+' class CSI-FrequencyOccupation
+' {
+'     startingRB
+'     nrofRBs
+' }
+
+' class CSI-RS-ResourceMapping
+' {
+'     "Define the location in freq."
+'     nrofPorts
+'     freqBand: CSI-FrequencyOccupation
+' }
+
+
+class NZP-CSI-RS-Resource
+{
+    resourceId
+    resourceMapping
+    periodicityAndOffset
+}
+
+class ZP-CSI-RS-Resource
+{
+    resourceId
+    resourceMapping
+    periodicityAndOffset
+}
+
+class CSI-IM-Resource
+{
+    resourceId
+    freqBand
+    csi-IM-ResourceElementPattern
+    periodicityAndOffset
+}
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+class CSI-SSB-ResourceSet
+{
+    resourceSetId
+    resourceIdList: SSB-Index
+}
+
+class NZP-CSI-RS-ResourceSet
+{
+    resourceSetId
+    resourceIdList
+    repetition
+    trs-Info
+}
+"NZP-CSI-RS-ResourceSet" "1" o-- "*" "NZP-CSI-RS-Resource"
+
+class ZP-CSI-RS-ResourceSet
+{
+    resourceSetId
+    resourceIdList
+}
+"ZP-CSI-RS-ResourceSet" "1" o-- "*" "ZP-CSI-RS-Resource"
+
+class CSI-IM-ResourceSet
+{
+    resourceSetId
+    resourceIdList
+}
+"CSI-IM-ResourceSet" "1" o-- "*" "CSI-IM-Resource"
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+"PDSCH-Config" o-- "ZP-CSI-RS-ResourceSet"
+
+class CSI-ResourceConfig
+{
+    resourceConfigId
+    resourceType: ap, sp, p
+}
+"CSI-ResourceConfig" "1" o-- "*" "NZP-CSI-RS-ResourceSet"
+"CSI-ResourceConfig" "1" o-- "*" "CSI-SSB-ResourceSet"
+"CSI-ResourceConfig" "1" o-- "*" "CSI-IM-ResourceSet"
+
+
+class CSI-MeasConfig
+"CSI-MeasConfig" o-- "CSI-ResourceConfig"
+"CSI-MeasConfig" o-- "CSI-ReportConfig"
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml System Component
+
+class "5G Core Network" <<5GC>>
+class "5G Radio Access Network" <<5G-RAN>>
+
+class "5G System" <<5GS>>
+"5G System" *-- "UE"
+"5G System" *-- "5G Radio Access Network"
+"5G System" *-- "5G Core Network"
+"5G Radio Access Network" .left. "5G Core Network" : NG-U/C
+
+note "The NG-RAN consists of a set of gNBs connected to the 5GC through the NG interface" as NGRAN_Note
+NGRAN_Note .. "NG-RAN"
+
+"5G Radio Access Network" *-- "NG-RAN"
+"5G Radio Access Network" *-- "non-3GPP RAN"
+"NG-RAN" *-- "gNB"
+"NG-RAN" *-- "ng-eNB"
+"gNB" .left. "ng-eNB" : Xn
+@enduml

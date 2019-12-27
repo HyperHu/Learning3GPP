@@ -1,0 +1,42 @@
+@startuml QoS_Model
+
+class "QoS Flow"
+
+"QoS Flow" "1" .. "1" "QoS Profile" : RAN
+"QoS Flow" "1" .. "*" "QoS rule" : UE
+"QoS Flow" "1" .. "*" "PDR" : UPF
+
+"QoS Profile" "1" .left. "1" "QFI"
+"QoS Profile" .. "5G QoS characteristics" : opt
+class "QoS Profile"
+{
+    5QI
+    ARP
+    == GBR Flow ==
+    GFBR
+    MFBR
+    Notification control : opt
+    MPLR : opt
+    == Non-GBR Flow ==
+    RQA : opt
+}
+
+class "QoS rule"
+{
+    QFI
+    Packet Filter Set
+    precedence value
+    QoS rule ID : opt
+}
+
+class "5G QoS characteristics"
+{
+    Resource Type
+    Priority Level
+    PDB : "UE -- UPF, 100% for Delay-critical; 98% for GBR; 98% for Non-GBR if uncongested"
+    PER : "upper bound"
+    Averaging Window : "Only GBR, for GFBR, MFBR"
+    MDBV : "Only Delay-critical GBR, with period of PDB"
+}
+
+@enduml

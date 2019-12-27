@@ -1,0 +1,75 @@
+@startuml 3GPP Concept CA
+
+class UE
+UE "1" *-- "1" "Master Cell Group"
+UE "1" *-- "0..1" "Secondary Cell Group"
+
+package "Serving Cell"
+{
+    class "Primary Cell" <<PCell>>
+    class "Primary SCG Cell" <<PSCell>>
+    class "Secondary Cell in MCG" <<SCell>>
+    {
+        "For a UE configured with CA, a cell providing\n additional radio resources on top of <b>Special Cell</b>."
+    }
+    class "Secondary Cell in SCG" <<SCell>>
+    class "Special Cell" <<SpCell>>
+}
+
+class "Master Cell Group" <<MCG>>
+class "Secondary Cell Group" <<SCG>>
+
+"Master Cell Group" "1" o-- "1" "Primary Cell"
+"Master Cell Group" "1" o-- "0..15" "Secondary Cell in MCG"
+
+"Secondary Cell Group" "1" o-- "1" "Primary SCG Cell"
+"Secondary Cell Group" "1" o-- "0..15" "Secondary Cell in SCG"
+
+"Special Cell" .left. "Primary Cell"
+"Special Cell" .right. "Primary SCG Cell"
+
+@enduml
+
+@startuml 3GPP Concept DC
+class "Multi-Radio Dual Connectivity" <<MR-DC>>
+{
+    "Dual Connectivity between E-UTRA and NR nodes,\nor between two NR nodes."
+}
+
+
+class "Intra-E-UTRA Dual Connectivity" <<DC>>
+{
+    "Define since LTE"
+    "Connect to EPC"
+    "MN is eNB, SN is eNB"
+}
+class "E-UTRA-NR Dual Connectivity" <<EN-DC>>
+{
+    "Connect to EPC"
+    "MN is eNB, SN is en-gNB"
+}
+
+
+class "NR-E-UTRA Dual Connectivity" <<NE-DC>>
+{
+    "Connect to 5GC"
+    "MN is gNB, SN is ng-eNB"
+}
+class "NG-RAN E-UTRA-NR Dual Connectivity" <<NGEN-DC>>
+{
+    "Connect to 5GC"
+    "MN is ng-eNB, SN is gNB"
+}
+class "NR-NR Dual Connectivity" <<NR-DC>>
+{
+    "Connect to 5GC"
+    "MN is gNB, SN is gNB"
+}
+
+"Multi-Radio Dual Connectivity" <|-- "Intra-E-UTRA Dual Connectivity"
+"Multi-Radio Dual Connectivity" <|-- "E-UTRA-NR Dual Connectivity"
+
+"Multi-Radio Dual Connectivity" <|-- "NR-E-UTRA Dual Connectivity"
+"Multi-Radio Dual Connectivity" <|-- "NG-RAN E-UTRA-NR Dual Connectivity"
+"Multi-Radio Dual Connectivity" <|-- "NR-NR Dual Connectivity"
+@enduml
