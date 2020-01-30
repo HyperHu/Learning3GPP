@@ -1,0 +1,55 @@
+@startuml PDCCH
+
+' note as global
+'     "Antenna ports starting with 2000 for PDCCH."
+' end note
+
+Physical_downlink_control_channel *--> Control_channel_element
+
+Control_channel_element "1" o-right-> "6/L" REG_bundle
+note on link: CCE j consists of REG bundle \n[f(6j/L) ~ f(6(j+1)/L)).
+
+class Physical_downlink_control_channel <<PDCCH>>
+
+class Control_channel_element <<CCE>>
+
+
+
+
+Control_resource_set "1" *--> "*" REG_bundle
+
+note "REG are numbered in increasing order \nin time-first manner, starting with 0 \nfor the first symbol and lowest RB." as N1
+Control_resource_set .right. N1
+N1 .. Resource_element_group
+
+REG_bundle "1" o-right-> "L" Resource_element_group
+note on link: REG_bundle i consists of REG \n[iL ~ (i+1)L)
+
+class Control_resource_set <<CORESET>>
+{
+    nRB_CORESET : 6Z
+    nSymb_CORESET : [1 ~ 3]
+}
+
+class REG_bundle
+{
+    L : bundle size
+}
+
+class Resource_element_group <<REG>>
+{
+    1 RB * 1 Symbol
+}
+
+
+
+
+(Control_channel_element, REG_bundle) .. CCE2REG_Mapping
+
+class CCE2REG_Mapping
+{
+    interleaved : bool
+    L : REG bundle size
+    f : interleaver
+}
+@enduml
