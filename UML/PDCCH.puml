@@ -1,8 +1,10 @@
 @startuml PDCCH
 
-' note as global
-'     "Antenna ports starting with 2000 for PDCCH."
-' end note
+note as global
+    "Antenna ports starting with 2000 for PDCCH."
+    "All the possible location for PDCCH is called 'Search Space'\nand each of the possible location is called 'PDCCH Candidates'".
+    "A UE may has 4 BWPs. Each BWP may has 3 CORESETs."
+end note
 
 Physical_downlink_control_channel *--> Control_channel_element
 
@@ -23,10 +25,15 @@ Control_resource_set .right. N1
 N1 .. Resource_element_group
 
 REG_bundle "1" o-right-> "L" Resource_element_group
-note on link: REG_bundle i consists of REG \n[iL ~ (i+1)L)
+note on link: REG_bundle i consists\nof REG [iL ~ (i+1)L)
 
 class Control_resource_set <<CORESET>>
 {
+    controlResourceSetId : [0 ~ 11]
+    pdcch_dmrs_ScramblingId
+    precoderGranularity
+    cce_REG_MappingType
+
     nRB_CORESET : 6Z
     nSymb_CORESET : [1 ~ 3]
 }
@@ -45,11 +52,22 @@ class Resource_element_group <<REG>>
 
 
 (Control_channel_element, REG_bundle) .. CCE2REG_Mapping
-
 class CCE2REG_Mapping
 {
     interleaved : bool
     L : REG bundle size
     f : interleaver
+}
+
+
+
+class Search_Space
+{
+    searchSpaceId : [0 ~ 39]
+    controlResourceSetId
+    monitoringSlotPeriodicityAndOffset : slot
+    duration: slot
+    monitoringSymbolsWithinSlot : symbol
+    searchSpaceType : [CSS, USS]
 }
 @enduml
